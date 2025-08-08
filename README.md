@@ -42,7 +42,7 @@ The main point is to enable Libtorch with:
 
 ## **GROMACS installation**
 
-Detailed instructions about patching GROMACS with PLUMED, configuration and installation are available [here](https://www.plumed.org/doc-master/user-doc/html/_installation.html).
+Detailed instructions about patching GROMACS with PLUMED, configuration and installation are available [here](https://www.plumed-tutorials.org/lessons/20/001/data/gromacs.html).
 
 ## **Credits and contact**
 
