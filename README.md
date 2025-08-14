@@ -18,7 +18,7 @@ This repository is organized in the following two directories:
  * MPI library/compilers for multi-replica ensemble simulations.
  * Cuda, needed by both GROMACS and PLUMED. The exact version depends a bit on how old your GPUs are.
  * [LibTorch](https://pytorch.org/get-started/locally/). Make sure you download the C++ version (LibTorch, not pytorch) that is supported by the Cuda version you installed; 
- * Conda to install the python libraries needed by the pre- and post-processing scripts. Have a look [here](https://github.com/COSBlab/EMMIVox/tree/main/scripts) for more info about the libraries that you need to install.
+ * Conda to install the python libraries needed by the pre- and post-processing scripts. Have a look [here](scripts) for more info about the libraries that you need to install.
  * [Phenix](https://phenix-online.org/documentation/index.html) (any recent version), if you want to validate single-structure refinement. Not really needed for ensemble modelling.
 
 ## **PLUMED installation**
