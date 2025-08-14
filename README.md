@@ -35,7 +35,7 @@ or downloading the following zip archive:
 
 ### 2. Configuring and compiling PLUMED
  
-Please have a look [here](https://www.plumed.org/doc-master/user-doc/html/_i_s_d_b.html) for detailed instructions about compiling PLUMED with Libtorch support.
+Please have a look [here](https://www.plumed.org/doc-master/user-doc/html/module_isdb/) for detailed instructions about compiling PLUMED with Libtorch support.
 The main point is to enable Libtorch with:
 
 `./configure --enable-libtorch`
