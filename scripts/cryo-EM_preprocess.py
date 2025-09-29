@@ -194,7 +194,7 @@ if(do_zoning):
   if res is not None:
     print("%37s %3.2lf" % ("Resolution [Ang] :", res))
   else:
-    print("Resolution [Ang]: not provided")
+    print("%37s %s" % ("Resolution [Ang] :", "not provided"))
   print("%37s %d" % ("Number of atoms :", len(pos_g)))
   print("%37s %4.1lf" % ("Mass [kDa] :", mass))
   # indexes of entries above threshold in minibox (tuple of 3 tensors)
