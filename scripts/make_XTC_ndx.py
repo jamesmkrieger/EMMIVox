@@ -27,7 +27,7 @@ def get_atom_indexes(oname,gname):
     return idx 
 
 # initialize parser
-parser = argparse.ArgumentParser(prog='python make_ndx.py', description='Create GROMACS index.ndx file with atoms selection')
+parser = argparse.ArgumentParser(prog='python make_XTC_ndx.py', description='Create GROMACS index.ndx file with atoms selection')
 parser.add_argument('group_name',  type=str, nargs='+',  help='Group(s) name(s)')
 parser.add_argument('--ndx',       type=str, nargs=1, help='GROMACS ndx file to append output')
 args = parser.parse_args()
