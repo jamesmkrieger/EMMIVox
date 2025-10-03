@@ -3,6 +3,7 @@ export PLUMED_NUM_THREADS=$1
 export logfile=${2:-"../1-Map-Preparation/log.preprocess"}
 export gro=${3:-"../2-Equilibration/em.gro"}
 export ndx=${4:-"../0-Building/index.ndx"}
+ndx=$(realpath "$ndx")
 export pdb=${5:-"step3_input_xtc.pdb"}
 pdb=$(realpath "$pdb")
 export tpr=${6:-"../2-Equilibration/em.tpr"}
@@ -31,6 +32,7 @@ do
         sed -e "s/NORM_DENSITY_/$n/g" $template \
          -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$d/g" \
          -e "s|../step3_input_xtc.pdb|$pdb|g" \
+         -e "s|../../0-Building/index.ndx|$ndx|g" \
          -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed.dat
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
