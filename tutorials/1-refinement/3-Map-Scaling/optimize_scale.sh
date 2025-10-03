@@ -1,11 +1,11 @@
 #!/bin/bash
-
-logfile=${1:"../1-Map-Preparation/log.preprocess"}
-gro=${2:"../2-Equilibration/em.gro"}
-ndx=${3:"../0-Building/index.ndx"}
-pdb=${4:"step3_input_xtc.pdb"}
-tpr=${5:"../2-Equilibration/em.tpr"}
-xtc=${6:"../../2-Equilibration/nvt_posres.xtc"}
+export PLUMED_NUM_THREADS=$1
+export logfile=${2:"../1-Map-Preparation/log.preprocess"}
+export gro=${3:"../2-Equilibration/em.gro"}
+export ndx=${4:"../0-Building/index.ndx"}
+export pdb=${5:"step3_input_xtc.pdb"}
+export tpr=${6:"../2-Equilibration/em.tpr"}
+export xtc=${7:"../../2-Equilibration/nvt_posres.xtc"}
 
 # number of CPU cores used by PLUMED 
 export PLUMED_NUM_THREADS=$1
