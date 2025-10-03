@@ -3,7 +3,7 @@ export PLUMED_NUM_THREADS=$1
 export logfile=${2:-"../1-Map-Preparation/log.preprocess"}
 export gro=${3:-"../2-Equilibration/em.gro"}
 export ndx=${4:-"../0-Building/index.ndx"}
-ndx=$(realpath "$ndx")
+ndx=$(realpath --relative-to=. "$ndx")
 export pdb=${5:-"step3_input_xtc.pdb"}
 pdb=$(realpath --relative-to=. "$pdb")
 export tpr=${6:-"../2-Equilibration/em.tpr"}
@@ -12,7 +12,7 @@ xtc=$(realpath "$xtc")
 export template=${8:-"../plumed_EMMI_template_BFACT.dat"}
 template=$(realpath "$template")
 export datafile=${9:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
-datafile=$(realpath "$datafile")
+datafile=$(realpath --relative-to=. "$datafile")
 
 # number of CPU cores used by PLUMED 
 export PLUMED_NUM_THREADS=$1
@@ -32,8 +32,8 @@ do
         sed -e "s/NORM_DENSITY_/$n/g" $template \
          -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$d/g" \
          -e "s|../step3_input_xtc.pdb|../$pdb|g" \
-         -e "s|../../0-Building/index.ndx|$ndx|g" \
-         -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed.dat
+         -e "s|../../0-Building/index.ndx|../$ndx|g" \
+         -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|../$datafile|g" > plumed.dat
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
         # go back to root 	
