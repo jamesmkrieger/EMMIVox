@@ -6,6 +6,7 @@ export ndx=${4:-"../0-Building/index.ndx"}
 export pdb=${5:-"step3_input_xtc.pdb"}
 export tpr=${6:-"../2-Equilibration/em.tpr"}
 export xtc=${7:-"../../2-Equilibration/nvt_posres.xtc"}
+export template=${8:-"../plumed_EMMI_template_BFACT.dat"}
 
 # number of CPU cores used by PLUMED 
 export PLUMED_NUM_THREADS=$1
@@ -22,7 +23,7 @@ do
         # create directory and go into
 	mkdir s-${d}; cd s-${d}
         # create plumed input file for postprocessing
-        sed -e "s/NORM_DENSITY_/$n/g" ../plumed_EMMI_template_BFACT.dat | sed -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$d/g" > plumed.dat
+        sed -e "s/NORM_DENSITY_/$n/g" $template | sed -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$d/g" > plumed.dat
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
         # go back to root 	
