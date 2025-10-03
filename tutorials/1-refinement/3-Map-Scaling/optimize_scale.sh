@@ -25,10 +25,10 @@ do
         # create directory and go into
 	mkdir s-${d}; cd s-${d}
         # create plumed input file for postprocessing
-        escaped_template=$(echo "$template" | sed 's/\//\\\//g')
+        escaped_pdb=$(echo "$pdb" | sed 's/\//\\\//g')
         sed -e "s/NORM_DENSITY_/$n/g" $template \
          -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$d/g" \
-         -e "s/..\/step3_input_xtc.pdb/$escaped_template/g" > plumed.dat
+         -e "s/..\/step3_input_xtc.pdb/$escaped_pdb/g" > plumed.dat
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
         # go back to root 	
