@@ -6,7 +6,9 @@ export ndx=${4:-"../0-Building/index.ndx"}
 export pdb=${5:-"step3_input_xtc.pdb"}
 export tpr=${6:-"../2-Equilibration/em.tpr"}
 export xtc=${7:-"../../2-Equilibration/nvt_posres.xtc"}
+xtc=$(realpath "$xtc")
 export template=${8:-"../plumed_EMMI_template_BFACT.dat"}
+template=$(realpath "$template")
 
 # number of CPU cores used by PLUMED 
 export PLUMED_NUM_THREADS=$1
