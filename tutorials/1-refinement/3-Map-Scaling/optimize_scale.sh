@@ -10,6 +10,8 @@ export xtc=${7:-"../../2-Equilibration/nvt_posres.xtc"}
 xtc=$(realpath "$xtc")
 export template=${8:-"../plumed_EMMI_template_BFACT.dat"}
 template=$(realpath "$template")
+export datafile=${9:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
+datafile=$(realpath "$datafile")
 
 # number of CPU cores used by PLUMED 
 export PLUMED_NUM_THREADS=$1
@@ -26,10 +28,10 @@ do
         # create directory and go into
 	mkdir s-${d}; cd s-${d}
         # create plumed input file for postprocessing
-        escaped_pdb=$(echo "$pdb" | sed 's/\//\\\//g')
         sed -e "s/NORM_DENSITY_/$n/g" $template \
          -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$d/g" \
-         -e "s/..\/step3_input_xtc.pdb/$escaped_pdb/g" > plumed.dat
+         -e "s|../step3_input_xtc.pdb|$pdb/g" \
+         -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed.dat
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
         # go back to root 	
