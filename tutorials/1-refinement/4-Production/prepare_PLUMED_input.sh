@@ -17,7 +17,7 @@ n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
 r=`grep Resolution $logfile | awk '{print $NF/10.0}'`
 s=`grep BEST_SCALE $bestscalefile | awk '{print $NF}'`
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # create plumed input file for production 
 sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_template.dat \
