@@ -18,7 +18,7 @@ pdb=$(realpath --relative-to=. "$pdb")
 export datafile=${9:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
-export mdp=${2:-"0-nvt-production.mdp"}
+export mdp=${10:-"0-nvt-production.mdp"}
 mdp=$(realpath --relative-to=. "$mdp")
 
 # 1) prepare master PLUMED input file
