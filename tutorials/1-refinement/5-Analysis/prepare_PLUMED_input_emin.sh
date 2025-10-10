@@ -1,5 +1,7 @@
 #!/bin/bash        
 DDIR=${1:-"../4-Production"}
+DDIR=$(realpath --relative-to=. "$DDIR")
+
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
 export logfile=${2:-"../1-Map-Preparation/log.preprocess"}
