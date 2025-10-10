@@ -8,7 +8,7 @@ topol=$(realpath --relative-to=. "$topol")
 export ndx=${4:-"../0-Building/index.ndx"}
 ndx=$(realpath --relative-to=. "$ndx")
 
-gmx_mpi grompp -f $mdp -c conf_best.gro -p $topol -o emin.tpr
+gmx_mpi grompp -f $mdp -c conf_best.gro -r conf_best.gro -p $topol -o emin.tpr
 gmx_mpi mdrun -pin on -deffnm emin -ntomp $1 -plumed plumed_EMMI_emin.dat -c conf_best_emin.gro
 
 # Once minimization is complete, we need to fix discontinuities due to Periodic Boundary Conditions with the following command:
