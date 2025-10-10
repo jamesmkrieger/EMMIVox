@@ -1,16 +1,25 @@
 # number of replicas
 nr=$1
 # datadir
-DDIR="../../1-refinement/4-Production/"
+export DDIR=${2:-"../../1-refinement/4-Production/"}
+
+export logfile=${3:-:"../../1-refinement/1-Map-Preparation/log.preprocess"}
+export bestscalefile=${4:-"../../1-refinement/3-Map-Scaling/BEST_SCALE"}
+
+export topol=${5:-"../../1-refinement/0-Building/topol.top"}
+export ndx=${6:-"../../1-refinement/0-Building/index.ndx"}
 
 # 1) prepare master PLUMED input file
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess`
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
-n=`grep NORM_DENSITY ../../1-refinement/1-Map-Preparation/log.preprocess | awk '{print $NF}'`
-r=`grep Resolution ../../1-refinement/1-Map-Preparation/log.preprocess | awk '{print $NF/10.0}'`
-s=`grep BEST_SCALE ../../1-refinement/3-Map-Scaling/BEST_SCALE | awk '{print $NF}'`
+n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
+r=`grep Resolution $logfile | awk '{print $NF/10.0}'`
+s=`grep BEST_SCALE $bestscalefile | awk '{print $NF}'`
+
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # create master PLUMED file for production
-sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_template.dat | sed -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$s/g" > plumed_EMMI.dat
+sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_template.dat \
+  -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$s/g" > plumed_EMMI.dat
 
 # 2) prepare master EMMIStatus file
 # Get line number of the frame with best score from COLVAR
@@ -49,7 +58,7 @@ do
   # chose whole system
   echo 0 | gmx_mpi trjconv -f ${DDIR}/production.trr -o rep-${dd}/conf.gro -dump ${val} -s ${DDIR}/production.tpr
   # create tpr file
-  gmx_mpi grompp -f 0-nvt-production.mdp -c rep-${dd}/conf.gro -n ../../1-refinement/0-Building/index.ndx -p ../../1-refinement/0-Building/topol.top -o rep-${dd}/production.tpr
+  gmx_mpi grompp -f 0-nvt-production.mdp -c rep-${dd}/conf.gro -n $ndx -p $topol -o rep-${dd}/production.tpr
   # copy master PLUMED and EMMIStatus file into replica directory
   cp plumed_EMMI.dat EMMIStatus rep-${dd}/
 done
