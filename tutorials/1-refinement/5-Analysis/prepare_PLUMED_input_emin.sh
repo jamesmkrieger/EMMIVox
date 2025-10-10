@@ -14,6 +14,8 @@ pdb=$(realpath --relative-to=. "$pdb")
 export datafile=${6:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
+not_homomer=${7:-0}
+
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
 n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
@@ -26,6 +28,11 @@ sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_emin_template.dat \
     -e "s|../3-Map-Scaling/step3_input_xtc.pdb|$pdb|g" \
     -e "s|../0-Building/index.ndx|$ndx|g" \
     -e "s|../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed_EMMI_emin.dat
+
+if [ "$not_homomer" -ne 0 ]; then
+    # Comment out BFACT_NOCHAIN
+    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin.dat > plumed_EMMI_emin.dat
+fi
 
 # Extract lowest energy frame from the single structure refinement (4-Production)
 # get time (ps) of the frame with best score
