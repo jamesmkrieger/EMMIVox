@@ -19,6 +19,7 @@ datafile=$(realpath --relative-to=. "$datafile")
 not_homomer=${7:-0}
 
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR=$(realpath --relative-to=. "$SCRIPT_DIR")
 
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
@@ -31,11 +32,13 @@ sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_emin_template.dat \
     -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$s/g" \
     -e "s|../3-Map-Scaling/step3_input_xtc.pdb|$pdb|g" \
     -e "s|../0-Building/index.ndx|$ndx|g" \
-    -e "s|../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed_EMMI_emin.dat
+    -e "s|../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed_EMMI_emin_1.dat
 
 if [ "$not_homomer" -ne 0 ]; then
     # Comment out BFACT_NOCHAIN
-    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin.dat > plumed_EMMI_emin.dat
+    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin_1.dat > plumed_EMMI_emin.dat
+else
+    cp plumed_EMMI_emin_1.dat plumed_EMMI_emin.dat
 fi
 
 # Extract lowest energy frame from the single structure refinement (4-Production)
