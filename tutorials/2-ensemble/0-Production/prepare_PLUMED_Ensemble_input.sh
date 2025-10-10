@@ -1,21 +1,25 @@
 # number of replicas
 nr=$1
+
+not_homomer=${2:-0}
+
 # datadir
-export DDIR=${2:-"../../1-refinement/4-Production/"}
+export DDIR=${3:-"../../1-refinement/4-Production/"}
 
-export logfile=${3:-:"../../1-refinement/1-Map-Preparation/log.preprocess"}
-export bestscalefile=${4:-"../../1-refinement/3-Map-Scaling/BEST_SCALE"}
+export logfile=${4:-:"../../1-refinement/1-Map-Preparation/log.preprocess"}
+export bestscalefile=${5:-"../../1-refinement/3-Map-Scaling/BEST_SCALE"}
 
-export topol=${5:-"../../1-refinement/0-Building/topol.top"}
-export ndx=${6:-"../../1-refinement/0-Building/index.ndx"}
+export topol=${6:-"../../1-refinement/0-Building/topol.top"}
+export ndx=${7:-"../../1-refinement/0-Building/index.ndx"}
 
-export pdb=${7:-"../../1-refinement/3-Map-Scaling/step3_input_xtc.pdb"}
+export pdb=${8:-"../../1-refinement/3-Map-Scaling/step3_input_xtc.pdb"}
 pdb=$(realpath --relative-to=. "$pdb")
 
-export datafile=${8:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
+export datafile=${9:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
-not_homomer=${9:-0}
+export mdp=${2:-"0-nvt-production.mdp"}
+mdp=$(realpath --relative-to=. "$mdp")
 
 # 1) prepare master PLUMED input file
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess`
@@ -78,7 +82,7 @@ do
   # chose whole system
   echo 0 | gmx_mpi trjconv -f ${DDIR}/production.trr -o rep-${dd}/conf.gro -dump ${val} -s ${DDIR}/production.tpr
   # create tpr file
-  gmx_mpi grompp -f 0-nvt-production.mdp -c rep-${dd}/conf.gro -n $ndx -p $topol -o rep-${dd}/production.tpr
+  gmx_mpi grompp -f $mdp -c rep-${dd}/conf.gro -n $ndx -p $topol -o rep-${dd}/production.tpr
   # copy master PLUMED and EMMIStatus file into replica directory
   cp plumed_EMMI.dat EMMIStatus rep-${dd}/
 done
