@@ -81,9 +81,9 @@ We need to prepare the system with an energy minimization and equilibration at r
      `gmx_mpi mdrun -pin on -deffnm em`
 
    * At this stage we store the energy-minimized conformation in a PDB file called `step3_input_xtc.pdb` with only the atoms in the 
-     group `System-XTC` (those saved in the GROMACS trajectory file).
+     group `System-XTC` (those saved in the GROMACS trajectory file), correcting the PBC for the whole complex.
 
-     `echo System-XTC | gmx_mpi trjconv -f em.gro -n ../0-Building/index.ndx -o ../3-Map-Scaling/step3_input_xtc.pdb -pbc nojump -s em.tpr`
+     `echo System-XTC System-XTC System-XTC | gmx_mpi trjconv -f em.gro -n ../0-Building/index.ndx -o ../3-Map-Scaling/step3_input_xtc.pdb -s $tpr -pbc cluster -ur compact -center`
 
    * We need to create additional restraints for the water molecules, which will be written to the `plumed_posres.dat` file. 
      These PLUMED restraints will keep the ordered waters in their positions as in `7P6A.pdb` (`--equil`) and the buffer within a radius of 8 Angstrom from a reference

@@ -20,8 +20,8 @@ export PLUMED_NUM_THREADS=$1
 n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
 r=`grep Resolution $logfile | awk '{print $NF/10.0}'`
 
-# create a PDB file with only the XTC atoms
-echo System-XTC | gmx_mpi trjconv -f $gro -n $ndx -o $pdb -pbc nojump -s $tpr
+# create a PDB file with only the XTC atoms, correcting the pbc for the whole complex rather than reducing jumps subunit-by-subunit
+echo System-XTC System-XTC System-XTC | gmx_mpi trjconv -f $gro -n $ndx -o $pdb -s $tpr -pbc cluster -ur compact -center
 
 # loop over scale values
 for d in $(seq 0.7 0.05 1.3)
