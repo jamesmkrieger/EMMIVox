@@ -12,9 +12,9 @@ Each step of the procedure will be carried out in a separate directory.
 
      You can specify fewer or more replicas depending on the number of CPU cores and GPUs available.
 
-     **Note**: If you have a monomeric protein or a heterocomplex, you need to edit `plumed_EMMI_template.dat` before executing the `prepare_PLUMED_Ensemble_input.sh` script
-               and comment the line starting with `BFACT_NOCHAIN`. This option is used here since we are modelling 5 identical chains and
-               we want the Bfactor of the same residue in different chains to be equal.
+     **Note**: If you have a monomeric protein or a heterocomplex, you need to comment the line starting with `BFACT_NOCHAIN`. This can be done adding in 1 for the not_homomer argument. The default `BFACT_NOCHAIN` option is used here since we are modelling 5 identical chains and we want the Bfactor of the same residue in different chains to be equal.
+
+     `bash prepare_PLUMED_Ensemble_input.sh 16 1` 
 
    * Run a 10-ns long simulation in parallel using 16 MPI processes, each one parallelized on multiple CPU cores (`$OMP_NUM_THREADS`). 
      You might need to adapt this line depending on your command to submit parallel jobs, i.e. srun, mpiexec, or mpirun.

@@ -1,22 +1,22 @@
-#!/bin/bash        
-DDIR=${1:-"../4-Production"}
+#!/bin/bash
+not_homomer=${1:-0}
+
+DDIR=${2:-"../4-Production"}
 DDIR=$(realpath --relative-to=. "$DDIR")
 
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
-export logfile=${2:-"../1-Map-Preparation/log.preprocess"}
-export bestscalefile=${3:-"../3-Map-Scaling/BEST_SCALE"}
+export logfile=${3:-"../1-Map-Preparation/log.preprocess"}
+export bestscalefile=${4:-"../3-Map-Scaling/BEST_SCALE"}
 
-export ndx=${4:-"../0-Building/index.ndx"}
+export ndx=${5:-"../0-Building/index.ndx"}
 ndx=$(realpath --relative-to=. "$ndx")
 
-export pdb=${5:-"../3-Map-Scaling/step3_input_xtc.pdb"}
+export pdb=${6:-"../3-Map-Scaling/step3_input_xtc.pdb"}
 pdb=$(realpath --relative-to=. "$pdb")
 
-export datafile=${6:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
+export datafile=${7:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
-
-not_homomer=${7:-0}
 
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 SCRIPT_DIR=$(realpath --relative-to=. "$SCRIPT_DIR")

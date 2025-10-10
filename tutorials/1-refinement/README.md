@@ -63,6 +63,8 @@ Each step of the procedure will be carried out in a separate directory.
 
 We need to prepare the system with an energy minimization and equilibration at room temperature. No cryo-EM restraints will be used at this stage.
 
+This can be performed as follows or using an alternative equilibration routine, such as the one output by CHARMM-GUI for membrane systems.
+
    * Run energy minimization:
 
      `gmx_mpi grompp -f 0-em-steep.mdp -c ../0-Building/step3_input.gro -p ../0-Building/topol.top -o em.tpr`
@@ -91,9 +93,9 @@ We need to prepare the system with an energy minimization and equilibration at r
 
    Here we are using 8 CPU cores (and the GPU) to postprocess the trajectory with PLUMED. The optimal value of the scale will be printed in `BEST_SCALE` at the end of the optimization. This will be used for both single-structure refinement and ensemble modelling.
 
-   **Note**: If you have a monomeric protein or a heterocomplex, you need to edit `plumed_EMMI_template_BFACT.dat` before executing the `optimize_scale.sh` script
-               and comment the line starting with `BFACT_NOCHAIN`. This option is used here since we are modelling 5 identical chains and 
-               we want the Bfactor of the same residue in different chains to be equal.
+   **Note**: If you have a monomeric protein or a heterocomplex, you need to comment the line starting with `BFACT_NOCHAIN`. This can be done adding in 1 for the not_homomer argument. The default `BFACT_NOCHAIN` option is used here since we are modelling 5 identical chains and we want the Bfactor of the same residue in different chains to be equal.
+
+   `bash optimize_scale.sh 8 1`
 
    **Working directory**: `3-Map-Scaling`
 
@@ -105,9 +107,9 @@ We need to prepare the system with an energy minimization and equilibration at r
 
      `bash prepare_PLUMED_input.sh`
 
-     **Note**: If you have a monomeric protein or a heterocomplex, you need to edit `plumed_EMMI_template.dat` before executing the `prepare_PLUMED_input.sh` script
-               and comment the line starting with `BFACT_NOCHAIN`. This option is used here since we are modelling 5 identical chains and
-               we want the Bfactor of the same residue in different chains to be equal.
+      **Note**: If you have a monomeric protein or a heterocomplex, you need to comment the line starting with `BFACT_NOCHAIN`. This can be done by adding in 1 for the not_homomer argument. The `BFACT_NOCHAIN` option is used here since we are modelling 5 identical chains and we want the Bfactor of the same residue in different chains to be equal.
+
+      `bash prepare_PLUMED_input.sh 1`
 
    * Run a 10-ns long production run following the instructions below, after setting the number of CPU cores to use (`$OMP_NUM_THREADS`). 
 
@@ -125,9 +127,9 @@ We need to prepare the system with an energy minimization and equilibration at r
      
      `bash prepare_PLUMED_input_emin.sh`
 
-     **Note**: If you have a monomeric protein or a heterocomplex, you need to edit `plumed_EMMI_emin_template.dat` before executing the `prepare_PLUMED_input_emin.sh` script
-               and comment the line starting with `BFACT_NOCHAIN`. This option is used here since we are modelling 5 identical chains and
-               we want the Bfactor of the same residue in different chains to be equal. 
+     **Note**: If you have a monomeric protein or a heterocomplex, you need to comment the line starting with `BFACT_NOCHAIN`. This can be done adding in 1 for the not_homomer argument. The default `BFACT_NOCHAIN` is used here since we are modelling 5 identical chains and we want the Bfactor of the same residue in different chains to be equal. 
+
+     `bash prepare_PLUMED_input_emin.sh 1`
 
    * Now we run energy minimization using 8 CPU cores:
     

@@ -1,17 +1,19 @@
 #!/bin/bash
 export PLUMED_NUM_THREADS=$1
-export logfile=${2:-"../1-Map-Preparation/log.preprocess"}
-export gro=${3:-"../2-Equilibration/em.gro"}
-export ndx=${4:-"../0-Building/index.ndx"}
+not_homomer=${2:-0}
+
+export logfile=${3:-"../1-Map-Preparation/log.preprocess"}
+export gro=${4:-"../2-Equilibration/em.gro"}
+export ndx=${5:-"../0-Building/index.ndx"}
 ndx=$(realpath --relative-to=. "$ndx")
-export pdb=${5:-"step3_input_xtc.pdb"}
+export pdb=${6:-"step3_input_xtc.pdb"}
 pdb=$(realpath --relative-to=. "$pdb")
-export tpr=${6:-"../2-Equilibration/em.tpr"}
-export xtc=${7:-"../../2-Equilibration/nvt_posres.xtc"}
+export tpr=${7:-"../2-Equilibration/em.tpr"}
+export xtc=${8:-"../../2-Equilibration/nvt_posres.xtc"}
 xtc=$(realpath "$xtc")
-export template=${8:-"../plumed_EMMI_template_BFACT.dat"}
+export template=${9:-"../plumed_EMMI_template_BFACT.dat"}
 template=$(realpath "$template")
-export datafile=${9:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
+export datafile=${10:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
 # number of CPU cores used by PLUMED 
@@ -34,6 +36,16 @@ do
          -e "s|../step3_input_xtc.pdb|../$pdb|g" \
          -e "s|../../0-Building/index.ndx|../$ndx|g" \
          -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|../$datafile|g" > plumed.dat
+
+        if [ "$not_homomer" -ne 0 ]; then
+                # Comment out BFACT_NOCHAIN
+                sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin_1.dat > plumed_EMMI_emin.dat
+        else
+                cp plumed_EMMI_emin_1.dat plumed_EMMI_emin.dat
+        fi
+
+        rm plumed_EMMI_emin_1.dat
+
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
         # go back to root 	
