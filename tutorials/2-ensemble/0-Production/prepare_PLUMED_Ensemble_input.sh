@@ -12,7 +12,7 @@ export ndx=${6:-"../../1-refinement/0-Building/index.ndx"}
 export pdb=${7:-"../../1-refinement/3-Map-Scaling/step3_input_xtc.pdb"}
 pdb=$(realpath --relative-to=. "$pdb")
 
-export datafile=${9:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
+export datafile=${8:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
 # 1) prepare master PLUMED input file
