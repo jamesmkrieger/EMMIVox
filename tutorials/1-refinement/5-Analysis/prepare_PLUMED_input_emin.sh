@@ -41,6 +41,8 @@ else
     cp plumed_EMMI_emin_1.dat plumed_EMMI_emin.dat
 fi
 
+rm plumed_EMMI_emin_1.dat
+
 # Extract lowest energy frame from the single structure refinement (4-Production)
 # get time (ps) of the frame with best score
 b=`grep -v FIELDS ${DDIR}/COLVAR | sort -n -k 2 | head -n 1 | awk '{print $1}'`
