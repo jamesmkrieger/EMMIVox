@@ -15,6 +15,8 @@ pdb=$(realpath --relative-to=. "$pdb")
 export datafile=${8:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
 datafile=$(realpath --relative-to=. "$datafile")
 
+not_homomer=${9:-0}
+
 # 1) prepare master PLUMED input file
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess`
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
