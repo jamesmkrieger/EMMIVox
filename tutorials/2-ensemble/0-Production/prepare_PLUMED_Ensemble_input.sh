@@ -32,9 +32,9 @@ sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_template.dat \
 
 if [ "$not_homomer" -ne 0 ]; then
     # Comment out BFACT_NOCHAIN
-    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_1.dat > plumed_EMMI_emin.dat
+    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_1.dat > plumed_EMMI.dat
 else
-    cp plumed_EMMI_1.dat plumed_EMMI_emin.dat
+    cp plumed_EMMI_1.dat plumed_EMMI.dat
 fi
 
 rm plumed_EMMI_1.dat
