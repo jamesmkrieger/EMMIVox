@@ -7,7 +7,9 @@ r=`grep Resolution ../1-Map-Preparation/log.preprocess | awk '{print $NF/10.0}'`
 s=`grep BEST_SCALE ../3-Map-Scaling/BEST_SCALE | awk '{print $NF}'`
 
 # create plumed input file for production 
-sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_emin_template.dat | sed -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$s/g" > plumed_EMMI_emin.dat
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_emin_template.dat \
+    -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$s/g" > plumed_EMMI_emin.dat
 
 # Extract lowest energy frame from the single structure refinement (4-Production)
 # get time (ps) of the frame with best score
