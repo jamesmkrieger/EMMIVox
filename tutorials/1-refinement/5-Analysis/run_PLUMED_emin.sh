@@ -8,6 +8,9 @@ topol=$(realpath --relative-to=. "$topol")
 export ndx=${4:-"../0-Building/index.ndx"}
 ndx=$(realpath --relative-to=. "$ndx")
 
+export pdb=${5:-"../3-Map-Scaling/step3_input_xtc.pdb"}
+pdb=$(realpath --relative-to=. "$pdb")
+
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 gmx_mpi grompp -f $mdp -c conf_best.gro -r conf_best.gro -p $topol -o emin.tpr
