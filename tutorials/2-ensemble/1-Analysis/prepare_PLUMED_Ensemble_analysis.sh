@@ -15,6 +15,6 @@ sed ${SCRIPT_DIR}/plumed_fix_pbc.dat \
 
 plumed driver --plumed plumed_fix_pbc.dat --mf_xtc traj-all.xtc
 
-# 3) extract from step3_input_xtc.pdb only the atoms used to generate the cryo-em map. 
+# 3) extract from pdb only the atoms used to generate the cryo-em map. 
 echo System-MAP-H | gmx_mpi trjconv -f $pdb -s ../0-Production/rep-00/production.tpr -n $ndx -o conf_map.pdb
 
