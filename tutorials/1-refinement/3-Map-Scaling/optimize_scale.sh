@@ -35,16 +35,16 @@ do
          -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$d/g" \
          -e "s|../step3_input_xtc.pdb|../$pdb|g" \
          -e "s|../../0-Building/index.ndx|../$ndx|g" \
-         -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|../$datafile|g" > plumed.dat
+         -e "s|../../1-Map-Preparation/emd_plumed_aligned.dat|../$datafile|g" > plumed_1.dat
 
         if [ "$not_homomer" -ne 0 ]; then
                 # Comment out BFACT_NOCHAIN
-                sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin_1.dat > plumed_EMMI_emin.dat
+                sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_1.dat > plumed.dat
         else
-                cp plumed_EMMI_emin_1.dat plumed_EMMI_emin.dat
+                cp plumed_1.dat plumed.dat
         fi
 
-        rm plumed_EMMI_emin_1.dat
+        rm plumed_1.dat
 
         # run PLUMED driver to calculate EMMIVOX score
         plumed driver --plumed plumed.dat --mf_xtc $xtc > log.plumed
