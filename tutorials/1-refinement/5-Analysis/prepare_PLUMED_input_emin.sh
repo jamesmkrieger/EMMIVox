@@ -21,6 +21,8 @@ datafile=$(realpath --relative-to=. "$datafile")
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 SCRIPT_DIR=$(realpath --relative-to=. "$SCRIPT_DIR")
 
+sortfield=${8:-2}
+
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
 n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
@@ -45,7 +47,7 @@ rm plumed_EMMI_emin_1.dat
 
 # Extract lowest energy frame from the single structure refinement (4-Production)
 # get time (ps) of the frame with best score
-b=`grep -v FIELDS ${DDIR}/COLVAR | sort -n -k 2 | head -n 1 | awk '{print $1}'`
+b=`grep -v FIELDS ${DDIR}/COLVAR | sort -n -k $sortfield | head -n 1 | awk '{print $1}'`
 # get the line of COLVAR corresponding to this frame
 line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k 3 | head -n 1 | awk '{print $1}'`
 
