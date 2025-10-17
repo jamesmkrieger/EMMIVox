@@ -16,6 +16,7 @@ sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_template.dat | sed -e "s/RESOLUTION_/$
 # Get line number of the frame with best score from COLVAR
 line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k 3 | head -n 1 | awk '{print $1}'`
 # Create EMMIStatus file header 
+cp ${DDIR}/EMMIStatus EMMIStatus_old
 sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus
 # Number of Bfactors
 nbf=`tail -n 1 ${DDIR}/EMMIStatus | awk '{print NF-3}'`
