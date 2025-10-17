@@ -38,7 +38,7 @@ sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_template.dat | sed -e "s/RESOLUTION_/$
 line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k $sortfield $sortargs | head -n 1 | awk '{print $1}'`
 # Create EMMIStatus file header 
 cp ${DDIR}/EMMIStatus EMMIStatus_old
-sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus
+sed -n 1p EMMIStatus_old > EMMIStatus
 # Number of Bfactors
 nbf=`tail -n 1 EMMIStatus_old | awk '{print NF-3}'`
 # Get minimum Bfactor from that line (skipping first three columns which are not Bfactor values)
