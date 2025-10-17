@@ -57,4 +57,4 @@ echo 0 | gmx_mpi trjconv -f ${DDIR}/production.trr -o conf_best.gro -dump $b -s 
 cp ${DDIR}/EMMIStatus EMMIStatus_old
 sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus
 # get the value of the line that has the lowest energy
-sed -n ${line}p ${DDIR}/EMMIStatus >> EMMIStatus
+sed -n ${line}p EMMIStatus_old >> EMMIStatus

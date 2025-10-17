@@ -55,9 +55,9 @@ line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k $sortfie
 cp ${DDIR}/EMMIStatus EMMIStatus_old
 sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus
 # Number of Bfactors
-nbf=`tail -n 1 ${DDIR}/EMMIStatus | awk '{print NF-3}'`
+nbf=`tail -n 1 EMMIStatus_old | awk '{print NF-3}'`
 # Get minimum Bfactor from that line (skipping first three columns which are not Bfactor values)
-a=`sed -n ${line}p ${DDIR}/EMMIStatus | awk '{for(i=4;i<=NF;++i)printf "%s\n",$i}' | sort -g | head -n 1`
+a=`sed -n ${line}p EMMIStatus_old | awk '{for(i=4;i<=NF;++i)printf "%s\n",$i}' | sort -g | head -n 1`
 
 # Fill EMMIStatus file with same bfactor
 # Time scale and offset
