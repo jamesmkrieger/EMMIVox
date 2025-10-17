@@ -1,21 +1,52 @@
 #!/bin/bash        
-DDIR="../4-Production"
+not_homomer=${1:-0}
+
+DDIR=${2:-"../4-Production"}
+DDIR=$(realpath --relative-to=. "$DDIR")
+
+export logfile=${3:-"../1-Map-Preparation/log.preprocess"}
+export bestscalefile=${4:-"../3-Map-Scaling/BEST_SCALE"}
+
+export ndx=${5:-"../0-Building/index.ndx"}
+ndx=$(realpath --relative-to=. "$ndx")
+
+export pdb=${6:-"../3-Map-Scaling/step3_input_xtc.pdb"}
+pdb=$(realpath --relative-to=. "$pdb")
+
+export datafile=${7:-"../../1-Map-Preparation/emd_plumed_aligned.dat"}
+datafile=$(realpath --relative-to=. "$datafile")
+
+sortfield=${8:-3}
+sortargs=${9:-""}
+
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
-n=`grep NORM_DENSITY ../1-Map-Preparation/log.preprocess | awk '{print $NF}'`
-r=`grep Resolution ../1-Map-Preparation/log.preprocess | awk '{print $NF/10.0}'`
-s=`grep BEST_SCALE ../3-Map-Scaling/BEST_SCALE | awk '{print $NF}'`
+n=`grep NORM_DENSITY $logfile | awk '{print $NF}'`
+r=`grep Resolution $logfile | awk '{print $NF/10.0}'`
+s=`grep BEST_SCALE $bestscalefile | awk '{print $NF}'`
 
 # create plumed input file for production 
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 sed -e "s/NORM_DENSITY_/$n/g" ${SCRIPT_DIR}/plumed_EMMI_emin_template.dat \
-    -e "s/RESOLUTION_/$r/g" | sed -e "s/SCALE_/$s/g" > plumed_EMMI_emin.dat
+    -e "s/RESOLUTION_/$r/g" -e "s/SCALE_/$s/g" \
+    -e "s|../3-Map-Scaling/step3_input_xtc.pdb|$pdb|g" \
+    -e "s|../0-Building/index.ndx|$ndx|g" \
+    -e "s|../1-Map-Preparation/emd_plumed_aligned.dat|$datafile|g" > plumed_EMMI_emin_1.dat
+
+if [ "$not_homomer" -ne 0 ]; then
+    # Comment out BFACT_NOCHAIN
+    sed -e "s/BFACT_NOCHAIN/#BFACT_NOCHAIN/g" plumed_EMMI_emin_1.dat > plumed_EMMI_emin.dat
+else
+    cp plumed_EMMI_emin_1.dat plumed_EMMI_emin.dat
+fi
+
+rm plumed_EMMI_emin_1.dat
 
 # Extract lowest energy frame from the single structure refinement (4-Production)
 # get time (ps) of the frame with best score
 b=`grep -v FIELDS ${DDIR}/COLVAR | sort -n -k 2 | head -n 1 | awk '{print $1}'`
 # get the line of COLVAR corresponding to this frame
-line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k 3 | head -n 1 | awk '{print $1}'`
+line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k $sortfield $sortargs | head -n 1 | awk '{print $1}'`
 
 # extract best frame (entire system)
 echo 0 | gmx_mpi trjconv -f ${DDIR}/production.trr -o conf_best.gro -dump $b -s ${DDIR}/production.tpr

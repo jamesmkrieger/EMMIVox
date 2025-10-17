@@ -21,6 +21,9 @@ datafile=$(realpath --relative-to=. "$datafile")
 export mdp=${10:-"0-nvt-production.mdp"}
 mdp=$(realpath --relative-to=. "$mdp")
 
+sortfield=${11:-3}
+sortargs=${12:-""}
+
 # 1) prepare master PLUMED input file
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess`
 # and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
@@ -47,7 +50,7 @@ rm plumed_EMMI_1.dat
 
 # 2) prepare master EMMIStatus file
 # Get line number of the frame with best score from COLVAR
-line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k 3 | head -n 1 | awk '{print $1}'`
+line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k $sortfield $sortargs | head -n 1 | awk '{print $1}'`
 # Create EMMIStatus file header 
 cp ${DDIR}/EMMIStatus EMMIStatus_old
 sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus

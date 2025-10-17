@@ -4,8 +4,6 @@ not_homomer=${1:-0}
 DDIR=${2:-"../4-Production"}
 DDIR=$(realpath --relative-to=. "$DDIR")
 
-# extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess` 
-# and BEST_SCALE from ../3-Map-Scaling/BEST_SCALE
 export logfile=${3:-"../1-Map-Preparation/log.preprocess"}
 export bestscalefile=${4:-"../3-Map-Scaling/BEST_SCALE"}
 

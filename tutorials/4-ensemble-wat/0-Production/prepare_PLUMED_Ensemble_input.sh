@@ -1,7 +1,28 @@
 # number of replicas
 nr=$1
+
+not_homomer=${2:-0}
+
 # datadir
-DDIR="../../3-refinement-wat/4-Production/"
+export DDIR=${3:-"../../1-refinement/4-Production/"}
+
+export logfile=${4:-:"../../1-refinement/1-Map-Preparation/log.preprocess"}
+export bestscalefile=${5:-"../../1-refinement/3-Map-Scaling/BEST_SCALE"}
+
+export topol=${6:-"../../1-refinement/0-Building/topol.top"}
+export ndx=${7:-"../../1-refinement/0-Building/index.ndx"}
+
+export pdb=${8:-"../../1-refinement/3-Map-Scaling/step3_input_xtc.pdb"}
+pdb=$(realpath --relative-to=. "$pdb")
+
+export datafile=${9:-"../../1-refinement/1-Map-Preparation/emd_plumed_aligned.dat"}
+datafile=$(realpath --relative-to=. "$datafile")
+
+export mdp=${10:-"0-nvt-production.mdp"}
+mdp=$(realpath --relative-to=. "$mdp")
+
+sortfield=${11:-3}
+sortargs=${12:-""}
 
 # 1) prepare master PLUMED input file
 # extract NORM_DENSITY and RESOLUTION from `../1-Map-Preparation/log.preprocess`
@@ -14,7 +35,7 @@ sed -e "s/NORM_DENSITY_/$n/g" plumed_EMMI_template.dat | sed -e "s/RESOLUTION_/$
 
 # 2) prepare master EMMIStatus file
 # Get line number of the frame with best score from COLVAR
-line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k 3 | head -n 1 | awk '{print $1}'`
+line=`awk '{print NR, $0}' ${DDIR}/COLVAR | grep -v FIELDS | sort -n -k $sortfield $sortargs | head -n 1 | awk '{print $1}'`
 # Create EMMIStatus file header 
 cp ${DDIR}/EMMIStatus EMMIStatus_old
 sed -n 1p ${DDIR}/EMMIStatus > EMMIStatus
